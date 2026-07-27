@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aditya Kumar | CTR Thumbnail Specialist</title>
+
+<style>
+/* ============================================================
+   1. RESET & BASE — White + Red only, calm and minimal
+   ============================================================ */
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+:root{
+  --bg:#ffffff;
+  --bg-soft:#f7f7f8;
+  --red:#e63946;
+  --red-dark:#c62834;
+  --red-soft:#fdecee;
+  --text-dark:#1a1a1a;
+  --text-muted:#6b6b70;
+  --card:#ffffff;
+  --border:rgba(0,0,0,0.08);
+}
+body{
+  font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--bg);
+  color:var(--text-dark);
+  overflow-x:hidden;
+  position:relative;
+  min-height:100vh;
+}
+
+/* ============================================================
+   2. SOFT AMBIENT GLOW
+   ============================================================ */
+.bg-glow{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(230,57,70,0.05), transparent 40%),
+    radial-gradient(circle at 85% 25%, rgba(230,57,70,0.04), transparent 45%);
+}
+.mouse-glow{
+  position:fixed;
+  width:420px; height:420px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(230,57,70,0.06), transparent 70%);
+  pointer-events:none;
+  z-index:0;
+  transform:translate(-50%,-50%);
+  transition:opacity .3s ease;
+  opacity:0;
+}
+
+/* ============================================================
+   3. LAYOUT
+   ============================================================ */
+.container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+  position:relative;
+  z-index:1;
+}
+section{ position:relative; z-index:1; }
+
+/* ============================================================
+   4. NAV
+   ============================================================ */
+nav{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(255,255,255,0.85);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 24px;
+  max-width:1200px;
+  margin:0 auto;
+}
+.logo{ font-weight:700; letter-spacing:0.5px; font-size:1.1rem; color:var(--text-dark); }
+.logo span{ color:var(--red); }
+.nav-links{ display:flex; gap:28px; list-style:none; }
+.nav-links a{
+  color:var(--text-muted);
+  text-decoration:none;
+  font-size:0.92rem;
+  transition:color .25s ease;
+}
+.nav-links a:hover{ color:var(--red); }
+@media (max-width:700px){ .nav-links{ display:none; } }
+
+/* ============================================================
+   5. HERO
+   ============================================================ */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:120px 24px 60px;
+}
+
+.profile-photo{
+  width:132px; height:132px;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid #fff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1), 0 0 0 4px var(--red-soft);
+  margin-bottom:26px;
+  opacity:0;
+  transform:translateY(-16px) scale(0.9);
+  animation:heroIn .8s ease forwards;
+}
+.profile-photo img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.hero-greeting{
+  font-size:clamp(1.9rem,5vw,3rem);
+  font-weight:700;
+  line-height:1.2;
+  letter-spacing:-0.5px;
+  color:var(--text-dark);
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroIn .8s ease forwards;
+  animation-delay:.1s;
+}
+.hero-greeting .accent{ color:var(--red); }
+
+.hero-desc{
+  margin-top:18px;
+  font-size:1.02rem;
+  line-height:1.7;
+  color:var(--text-muted);
+  max-width:480px;
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroIn .8s ease forwards;
+  animation-delay:.2s;
+}
+
+.hero-badges{
+  margin-top:28px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroIn .8s ease forwards;
+  animation-delay:.3s;
+}
+.badge{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:8px 15px;
+  border-radius:999px;
+  background:var(--bg-soft);
+  border:1px solid var(--border);
+  font-size:0.82rem;
+  color:var(--text-dark);
+}
+.badge:nth-child(even){
+  background:var(--red-soft);
+  border-color:rgba(230,57,70,0.18);
+}
+.badge .tick{ color:var(--red); font-weight:700; }
+
+.cta-btn{
+  margin-top:34px;
+  display:inline-block;
+  padding:14px 32px;
+  font-size:1rem;
+  font-weight:600;
+  color:#fff;
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  border:none;
+  border-radius:14px;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 10px 25px rgba(230,57,70,0.25);
+  transition:transform .3s ease, box-shadow .3s ease;
+  opacity:0;
+  transform:translateY(20px);
+  animation:heroIn .8s ease forwards;
+  animation-delay:.4s;
+}
+.cta-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 32px rgba(230,57,70,0.35);
+}
+@keyframes heroIn{ to{ opacity:1; transform:translateY(0) scale(1); } }
+
+/* ============================================================
+   6. SECTION HEADING
+   ============================================================ */
+.title-wrap{
+  text-align:center;
+  margin-bottom:56px;
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.title-wrap.visible{ opacity:1; transform:translateY(0); }
+.title-strip{
+  display:block;
+  width:56px;
+  height:5px;
+  background:var(--red);
+  border-radius:0;
+  margin:0 auto 16px;
+}
+.section-title{
+  font-size:clamp(1.7rem,4vw,2.3rem);
+  font-weight:700;
+  letter-spacing:-0.5px;
+  color:var(--text-dark);
+}
+
+/* ============================================================
+   7. PROJECTS — mobile: single column stack.
+   Desktop: 2-column grid, so 2 cards per row (4 visible per
+   viewport as you scroll — 2 up top, 2 below).
+   ============================================================ */
+.projects{ padding:90px 0 110px; }
+
+#projectsContainer{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:0;
+}
+
+.project-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:130px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:opacity .8s ease, transform .8s ease;
+}
+.project-card.visible{ opacity:1; transform:translateY(0); }
+
+.media-stack{
+  width:100%;
+  max-width:640px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+}
+
+.raw-wrap{
+  position:relative;
+  width:54%;
+  max-width:300px;
+  margin-bottom:24px; /* simple fixed gap, no connecting line */
+}
+
+.raw-frame{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:0 8px 20px rgba(0,0,0,0.06);
+  position:relative;
+}
+.raw-frame img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+  filter:saturate(0.85);
+}
+
+/* RAW IMAGE tag, back on the raw frame */
+.raw-frame .tag{
+  position:absolute;
+  top:8px; left:8px;
+  font-size:0.62rem;
+  font-weight:700;
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+  padding:4px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.92);
+  color:var(--text-muted);
+  border:1px solid var(--border);
+}
+
+/* Large thumbnail */
+.thumb-frame{
+  width:100%;
+  aspect-ratio:16/9;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--border);
+  box-shadow:0 20px 45px rgba(0,0,0,0.1);
+  position:relative;
+  transform:scale(0.85);
+  opacity:0;
+  filter:blur(10px);
+  transition:transform 1s cubic-bezier(.22,1,.36,1), opacity 1s ease, filter 1s ease, box-shadow .4s ease;
+}
+.thumb-frame.revealed{
+  transform:scale(1);
+  opacity:1;
+  filter:blur(0);
+}
+.thumb-frame:hover{
+  box-shadow:0 26px 55px rgba(0,0,0,0.16), 0 0 0 4px var(--red-soft);
+}
+.thumb-frame img{
+  width:100%; height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.project-info{
+  text-align:center;
+  margin-top:20px;
+}
+.project-info h3{
+  font-size:1.25rem;
+  font-weight:700;
+  color:var(--text-dark);
+}
+
+/* ============================================================
+   8. CONTACT SECTION
+   ============================================================ */
+.contact{
+  padding:110px 0 70px;
+  text-align:center;
+}
+.contact h2{
+  font-size:clamp(1.9rem,5vw,2.8rem);
+  font-weight:700;
+  margin-bottom:16px;
+  color:var(--text-dark);
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.contact h2.visible{ opacity:1; transform:translateY(0); }
+.contact p.sub{
+  color:var(--text-muted);
+  margin-bottom:36px;
+  font-size:1rem;
+}
+.contact-buttons{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-bottom:30px;
+}
+.contact-btn{
+  padding:14px 28px;
+  border-radius:14px;
+  font-weight:600;
+  font-size:0.92rem;
+  text-decoration:none;
+  color:var(--text-dark);
+  background:var(--card);
+  border:1px solid var(--border);
+  transition:transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.contact-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 28px rgba(0,0,0,0.08);
+  border-color:var(--red);
+}
+.contact-btn.primary{
+  background:linear-gradient(135deg,var(--red),var(--red-dark));
+  color:#fff;
+  border:none;
+  box-shadow:0 10px 25px rgba(230,57,70,0.25);
+}
+.payment-note{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  padding:9px 18px;
+  border-radius:999px;
+  background:var(--red-soft);
+  border:1px solid rgba(230,57,70,0.18);
+  font-size:0.82rem;
+  color:var(--text-dark);
+}
+footer{
+  text-align:center;
+  padding:28px 0;
+  color:var(--text-muted);
+  font-size:0.8rem;
+  border-top:1px solid var(--border);
+}
+
+/* ============================================================
+   9. SCROLL REVEAL UTILITY
+   ============================================================ */
+.reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.reveal.visible{ opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   10. DESKTOP ENHANCEMENTS — 2-column project grid.
+   2 cards per row means as you scroll, 2 appear on top and
+   2 more directly below (4 visible in a typical viewport).
+   ============================================================ */
+@media (min-width:1024px){
+  .hero-desc{ font-size:1.1rem; max-width:540px; }
+
+  #projectsContainer{
+    grid-template-columns:repeat(2, 1fr);
+    gap:60px 40px;
+  }
+  .project-card{ margin-bottom:0; }
+  .media-stack{ max-width:100%; }
+  .raw-wrap{ max-width:260px; }
+
+  .thumb-frame:hover{ transform:scale(1.015); }
+  .section-title{ font-size:2.5rem; }
+  .contact h2{ font-size:3rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- ============================================================
+     NAVIGATION
+     ============================================================ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Aditya<span>.</span>Kumar</div>
+    <ul class="nav-links">
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero">
+  <div class="profile-photo">
+    <img src="profile.jpg" alt="Aditya Kumar">
+  </div>
+  <h1 class="hero-greeting">Hi, My Name is <span class="accent">Aditya Kumar</span></h1>
+  <p class="hero-desc">
+    I create high CTR YouTube thumbnails by analyzing every channel individually
+    to maximize clicks and improve performance.
+  </p>
+  <div class="hero-badges">
+    <div class="badge"><span class="tick">✔</span> CTR Specialist</div>
+    <div class="badge"><span class="tick">✔</span> 200+ Clients</div>
+    <div class="badge"><span class="tick">✔</span> Fast Delivery</div>
+    <div class="badge"><span class="tick">✔</span> Crypto & UPI</div>
+  </div>
+  <a href="#contact" class="cta-btn">Contact Me</a>
+</section>
+
+<!-- ============================================================
+     PROJECTS
+     ============================================================ -->
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="title-wrap reveal">
+      <span class="title-strip"></span>
+      <h2 class="section-title">Our Recent Projects</h2>
+    </div>
+    <div id="projectsContainer"></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <h2 class="reveal">Let's Work Together</h2>
+    <p class="sub">Ready to boost your CTR? Reach out and let's talk about your channel.</p>
+    <div class="contact-buttons">
+      <a href="mailto:adityakumar58vf@gmail.com" class="contact-btn primary">Email Me</a>
+      <a href="https://t.me/Thumbcraft0" target="_blank" class="contact-btn">Telegram</a>
+    </div>
+    <div class="payment-note">💳 Crypto & UPI Accepted</div>
+  </div>
+</section>
+
+<footer>
+  © 2026 Aditya Kumar — CTR Thumbnail Specialist. All rights reserved.
+</footer>
+
+<script>
+/* ============================================================
+   1. PROJECT DATA — now 10 projects. Replace raw/thumb file
+   names with your saved images; rename generic titles as needed.
+   ============================================================ */
+const projects = [
+  { id:1,  raw:"raw1.jpg",  thumb:"thumb1.jpg",  title:"How To Get First Project" },
+  { id:2,  raw:"raw2.jpg",  thumb:"thumb2.jpg",  title:"Sell Ebook" },
+  { id:3,  raw:"raw3.jpg",  thumb:"thumb3.jpg",  title:"Improve Credit Score 800+ in 30 Days" },
+  { id:4,  raw:"raw4.jpg",  thumb:"thumb4.jpg",  title:"No-Code AI Agents Full Guide" },
+  { id:5,  raw:"raw5.jpg",  thumb:"thumb5.jpg",  title:"Make.com Full Course" },
+  { id:6,  raw:"raw6.jpg",  thumb:"thumb6.jpg",  title:"The Discipline of Focus" },
+  { id:7,  raw:"raw7.jpg",  thumb:"thumb7.jpg",  title:"Project 7" },
+  { id:8,  raw:"raw8.jpg",  thumb:"thumb8.jpg",  title:"Project 8" },
+  { id:9,  raw:"raw9.jpg",  thumb:"thumb9.jpg",  title:"Project 9" },
+  { id:10, raw:"raw10.jpg", thumb:"thumb10.jpg", title:"Project 10" }
+];
+
+/* ============================================================
+   2. BUILD PROJECT CARDS — raw (tagged, on top) -> gap -> thumbnail
+   ============================================================ */
+const container = document.getElementById('projectsContainer');
+
+projects.forEach((p) => {
+  const card = document.createElement('div');
+  card.className = 'project-card reveal';
+  card.innerHTML = `
+    <div class="media-stack">
+      <div class="raw-wrap">
+        <div class="raw-frame">
+          <span class="tag">Raw Image</span>
+          <img src="${p.raw}" alt="Raw image ${p.id}">
+        </div>
+      </div>
+      <div class="thumb-frame" data-thumb>
+        <img src="${p.thumb}" alt="Thumbnail ${p.id}">
+      </div>
+    </div>
+    <div class="project-info">
+      <h3>${p.title}</h3>
+    </div>
+  `;
+  container.appendChild(card);
+});
+
+/* ============================================================
+   3. SCROLL REVEAL
+   ============================================================ */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+/* ============================================================
+   4. THUMBNAIL REVEAL ANIMATION
+   ============================================================ */
+const thumbObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('revealed');
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('[data-thumb]').forEach(el => thumbObserver.observe(el));
+
+/* ============================================================
+   5. MOUSE GLOW
+   ============================================================ */
+const mouseGlow = document.getElementById('mouseGlow');
+let glowVisible = false;
+window.addEventListener('mousemove', (e) => {
+  mouseGlow.style.left = `${e.clientX}px`;
+  mouseGlow.style.top = `${e.clientY}px`;
+  if (!glowVisible) { mouseGlow.style.opacity = '1'; glowVisible = true; }
+});
+window.addEventListener('mouseleave', () => {
+  mouseGlow.style.opacity = '0';
+  glowVisible = false;
+});
+</script>
+
+</body>
+</html>
